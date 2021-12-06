@@ -102,9 +102,39 @@ class MapManager {
  * A function to retrieve the current location and update the page.
  * It is called once the page has been fully loaded.
  */
-// ... your code here ...
+
+function updateLocation() {
+    try{
+        LocationHelper.findLocation(updateDocument);} 
+    catch(e){
+        alert("Fehler beim Auslesen der Position!");
+    }
+
+    let mapManager = new MapManager("EHhsx33AjvAofKoU9zPL366HAQnvBAwE");
+    var mapURL = mapManager.getMapUrl(
+        document.getElementById("latitude_input").value, 
+        document.getElementById("longitude_input").value,
+    )
+    document.getElementById("mapView").setAttribute("src",mapURL) ;
+}
+
+function updateDocument(helper) {
+    // Tagging Form values
+    document.getElementById("latitude_input").value = helper.latitude; 
+    document.getElementById("longitude_input").value = helper.longitude;
+    // Discovery Form values
+    document.getElementById("discovery_latitude").value = helper.latitude;
+    document.getElementById("discovery_longitude").value = helper.longitude;
+
+    // logging for development
+    console.log(document.getElementById("latitude_input").value);
+    console.log(document.getElementById("longitude_input").value);
+    console.log(document.getElementById("discovery_latitude").value);
+    console.log(document.getElementById("discovery_longitude").value);
+}
+
 
 // Wait for the page to fully load its DOM content, then call updateLocation
 document.addEventListener("DOMContentLoaded", () => {
-    alert("Please change the script 'geotagging.js'");
+    updateLocation();
 });

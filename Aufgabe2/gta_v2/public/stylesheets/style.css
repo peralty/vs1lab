@@ -1,0 +1,239 @@
+html {
+    box-sizing: border-box;
+  }
+  
+  @media only screen and (max-width:980px) {
+    .main__discovery, .main__tagging,.discovery__map,.row {
+      
+      
+      flex-direction: column;
+      width:100%;
+    }
+   
+      
+  }
+      
+  
+  button {
+    margin-top: 15px;
+    background: #F8F8F8;
+    color: black;
+    width: 100px;
+    padding: 5px;
+    font-weight: bold;
+    text-align: center;
+    border: 1px solid black;
+    width: 175px;
+    display: block;
+   }
+  
+   button:hover {
+    color: white;
+    background: darkgray;
+   }
+  
+   button:active {
+    border: 1px dashed black;
+   }
+  
+  input {
+    padding: 4px;
+  }
+  
+  fieldset {
+    padding: 15px;
+  }
+  
+  form label {
+    margin-top: 15px;
+    display: block;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+  
+    /* This approach prevents issues with 3rd party content-box components */
+    box-sizing: inherit;
+  }
+  
+  
+  /* Variables (example: see declaration for "a" below) */
+  
+  :root {
+    --link-color: #00B7FF;
+    --background-color: #efefef;
+    --border-color: #cdcdcd;
+    --gray-color: #666;
+  }
+  
+  
+  /* HTML element styles */
+  
+  body {
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  a {
+    color: var(--link-color);
+  }
+  
+  /* Grid styles (no changes required) */
+  .row {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex: 1%;
+  }
+  
+  .col-1 {
+    width: calc(8.33% - 1rem);
+  }
+  
+  .col-2 {
+    width: calc(16.66% - 1rem);
+  }
+  
+  .col-3 {
+    width: calc(25% - 1rem);
+  }
+  
+  .col-4 {
+    width: calc(33.33% - 1rem);
+  }
+  
+  .col-5 {
+    width: calc(41.66% - 1rem);
+  }
+  
+  .col-6 {
+    width: calc(50% - 1rem);
+  }
+  
+  .col-7 {
+    width: calc(58.33% - 1rem);
+  }
+  
+  .col-8 {
+    width: calc(66.66% - 1rem);
+  }
+  
+  .col-9 {
+    width: calc(75% - 1rem);
+  }
+  
+  .col-10 {
+    width: calc(83.33% - 1rem);
+  }
+  
+  .col-11 {
+    width: calc(91.66% - 1rem);
+  }
+  
+  .col-12 {
+    width: calc(100% - 1rem);
+  }
+  
+  
+  /* ### TODO ### Styles for Header Component */
+  .header {
+    height: 90px;
+    background-color: lightgray;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-bottom: black 1px solid;
+  }
+  
+  .header__image {
+    margin-left: 3%;
+    float: left;
+  }
+  
+  
+  .header__navigation {
+    display:inline;
+    float: right;
+    padding-top: 25px;
+    margin-right: 3%;
+  }
+  .header__title {
+    display:inline;
+    float: left;
+    margin-left: 50px ;
+    padding-top: 15px;
+    
+  }
+  
+  /* ### TODO ### Styles for Main Component */
+  .main {
+    /* background-color: lightgray; */
+    margin-bottom: 10px;
+    padding: 10px;
+  }
+  
+  
+  /* ### TODO ### Styles for Tagging component */
+  .main__tagging {
+    width: 20%;
+    margin-left: 2.5%;
+    margin-right: 30px;
+    float: left;
+    padding: 1%;
+  }
+  
+  
+  /* ### TODO ### Styles for Discovery component */
+  .main__discovery {
+    margin-right: 2.5%;
+    width: 70%;
+    float: left;
+    padding: 1%;
+  }
+  
+  .discovery__results li {
+    height: 55px;
+    width: 200px;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color:#EFEFEF;
+    list-style: none;
+    color:deepskyblue;
+  }
+  
+  .discovery__taglist {
+    float: left;
+    margin: 10px 10px 10px 0px;
+  }
+  
+  .discovery__map {
+    margin: 10px 0px 10px 0px;
+    float: right;
+    display: block;
+    
+    
+  }
+  
+  
+  /* ### TODO ### Styles for Footer Component */
+  .footer {
+    height: 60px;
+    background-color: lightgray;
+    padding: 25px;
+    border-top: black 1px solid;
+  }
+  
+  
+  
+  
+  #latitude_input {
+    background-color: #F8F8F8;
+  }
+  
+  #longitude_input {
+    background-color: #F8F8F8;
+  }
+  
+  /* ### TODO ### Media Queries */
