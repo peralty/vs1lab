@@ -2,7 +2,7 @@
 // const erzeugt Konstanten
 const fs = require('fs'),
 	net = require('net'),
-	filename = 'todos.txt',
+	filename = 'Beispiele/nodejs_networking/todos.txt',
 	// Hier wird der Server erzeugt
 	server = net.createServer(function(connection) {
 		// Bei einer neuen Verbindung wird diese Funktion ausgeführt

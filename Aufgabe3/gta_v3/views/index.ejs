@@ -1,5 +1,93 @@
-<!-- TODO: HTML AUS AUFGABE2 HIERHER KOPIEREN UND DIE BEISPIEL-EINTRÄGE DER DISCOVERY-LISTE MIT DEN FOLGENDEN ZEILEN ERSETZEN -->
+<!DOCTYPE html>
+<html lang="en">
 
-<% if (taglist !== undefined) taglist.forEach(function(gtag) { %>
-    <li><%= gtag.name %> ( <%= gtag.latitude %>,<%= gtag.longitude %>) <%= gtag.hashtag %> </li>
-<% }); %>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>GeoTagApp</title>
+	<link rel="stylesheet" href="../public/stylesheets/style.css" />
+</head>
+
+<body>
+	<!-- Load JavaScripts
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="./javascripts/geotagging.js"></script>
+	<header class="header">
+		<img src="./images/location.png" class="header__image" alt="an image of a map and location" width="65px" height="65px">
+		<h1 class="header__title">GeoTagApp</h1>
+		<nav class="header__navigation">
+			<a href="#">About</a> | <a href="#">Help</a> | <a href="/">Home</a>
+		</nav>
+	</header>
+
+	<main class="main row">
+		<section class="main__tagging tagging col-6">
+			<h2>Tagging</h2> <br>
+
+			<!-- ############### VS1Lab 1a Form 1 Start -->
+			<form id="tag-form" action="/tagging" method="post" target="_blank">
+				<fieldset>
+					<legend><b>Add a new GeoTag</b></legend>
+
+					<label for="latitude_input">Latitude:</label>
+					<input id="latitude_input" type="text" value="49.01379" readonly>
+
+					<label for="longitude_input">Longitude:</label>
+					<input id="longitude_input" type="text" value="8.390071" readonly>
+
+					<label for="name_input">Name:</label>
+					<input id="name_input" type="text" maxlength="10" placeholder="e.g. Berlin" required>
+
+					<label for="hashtag_input">Hashtag:</label>
+					<input id="hashtag_input" type="text" pattern="#[a-zA-Z]+" maxlength="11" placeholder="e.g. #ber">
+
+					<button id="add_tag_button" value="0">Add Tag</button>
+				</fieldset>
+			</form>
+			<!-- ############### VS1Lab 1a Form 1 End -->
+
+		</section>
+
+		<section class="main__discovery discovery col-6">
+			<h2 class="discovery__title">Discovery</h2> <br>
+
+			<!-- ############### VS1Lab 1a Form 2 Start -->
+			<form class="discovery__search" id="discoveryFilterForm" action="/discovery" method="post" target="_blank">
+				<fieldset class="form_fieldset">
+					<legend><b>Search</b></legend>
+
+					<label for="search_input">Search term or keywords:</label>
+					<input id="search_input" type="text" placeholder="e.g. Berlin" readonly>
+
+                    <input id="discovery_latitude" type="hidden">
+                    <input id="discovery_longitude" type="hidden">
+
+					<button id="search_button" value="0">Search</button>
+				</fieldset>
+			</form>
+			<!-- ############### VS1Lab 1a Form 2 End -->
+
+			<div class="discovery__wrapper">
+				<div class="discovery__taglist">
+					<ul class="discovery__results" id="discoveryResults">
+						<% if (taglist !== undefined) taglist.forEach(function(gtag) { %>
+							<li><%= gtag.name %> ( <%= gtag.latitude %>,<%= gtag.longitude %>) <%= gtag.hashtag %> </li>
+						<% }); %>
+					</ul>
+				</div>
+
+				<div class="discovery__map">
+					<img src="./images/mapview.jpg" alt="a map with locations" id="mapView" width="375px" height="350px" /><br>
+					<span>Result map</span>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<footer class="footer">
+		<span>(c) 2021/22 HKA_IWI_VSYS</span>
+	</footer>
+</body>
+
+</html>
