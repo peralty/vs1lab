@@ -1,5 +1,9 @@
 // File origin: VS1LAB A3
 
+// Imports
+const GeoTag = require("./geotag");
+const GeoTagExamples = require("./geotag-examples");
+
 /**
  * This script is a template for exercise VS1lab/Aufgabe3
  * Complete all TODOs in the code documentation.
@@ -24,8 +28,48 @@
  * - Keyword matching should include partial matches from name or hashtag fields. 
  */
 class InMemoryGeoTagStore{
+   
+    static #geoTags = GeoTagExamples.tagList;
 
-    // TODO: ... your code here ...
+    static addGeoTag(GeoTag) {
+        this.#geoTags.push(GeoTag);
+    }
+
+    static removeGeoTag(GeoTag) {
+        this.#geoTags.splice(this.#geoTags.indexOf(GeoTag), 1);
+    }
+
+    static getNearbyGeoTags(location, radius) {
+        let result = [];
+
+        this.#geoTags.forEach(function (GeoTag) {
+            let distance = Math.sqrt(Math.pow(GeoTag.latitude - location.latitude, 2) +
+                Math.pow(GeoTag.longitude - location.longitude, 2));
+            // console.log(GeoTag.latitude);
+
+            if (distance <= radius) {
+                result.push(GeoTag);
+            }
+        })
+        return result;
+    }
+
+    static searchNearbyGeoTags(location, radius, keyword) {
+        let result = this.getNearbyGeoTags(location, radius);
+        let searchReturn = [];
+
+        result.forEach(function (GeoTag, index) {
+            let gtname = GeoTag.name;
+            let gttag = GeoTag.hashtag;
+            let keywordStr = keyword;
+            if ((gtname.includes(keywordStr) || gttag.includes(keywordStr))) {
+                searchReturn.push(GeoTag);
+            }
+            //console.log(searchReturn);
+        })
+        //console.log(result);
+        return searchReturn;
+    } 
 
 }
 

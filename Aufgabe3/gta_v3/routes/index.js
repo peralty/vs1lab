@@ -13,11 +13,17 @@
 const express = require('express');
 const router = express.Router();
 
+/*
+const app = express();
+app.use(express.json()); // for parsing application/json
+app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+*/
+
 /**
  * The module "geotag" exports a class GeoTagStore. 
  * It represents geotags.
  * 
- * TODO: implement the module in the file "../models/geotag.js"
+ * DONE: implement the module in the file "../models/geotag.js"
  */
 // eslint-disable-next-line no-unused-vars
 const GeoTag = require('../models/geotag');
@@ -26,7 +32,7 @@ const GeoTag = require('../models/geotag');
  * The module "geotag-store" exports a class GeoTagStore. 
  * It provides an in-memory store for geotag objects.
  * 
- * TODO: implement the module in the file "../models/geotag-store.js"
+ * DONE: implement the module in the file "../models/geotag-store.js"
  */
 // eslint-disable-next-line no-unused-vars
 const GeoTagStore = require('../models/geotag-store');
@@ -59,8 +65,24 @@ router.get('/', (req, res) => {
  * To this end, "GeoTagStore" provides a method to search geotags 
  * by radius around a given location.
  */
+// DONE: ... your code here ...
+router.post('/tagging', (req, res) => {
+  //console.log(req.body);
+  let tag = new GeoTag(req.body["name_input"],
+      req.body["latitude_input"],
+      req.body["longitude_input"],
+      req.body["hashtag_input"]);
+  GeoTagStore.addGeoTag(tag);
+  res.render('index', {taglist: GeoTagStore.getNearbyGeoTags(tag, 100000)})
+});
 
-// TODO: ... your code here ...
+/*
+app.post('/tagging', function (req, res)  {
+  var gtag = new GeoTag(req.body.latitude,req.body.longitude,req.body.name,req.body.hashtag);
+  GeoTagStore.addGeoTag(gtag);
+  res.render('index', {taglist: GeoTagStore.getNearbyGeoTags(tag, 100000)});
+});
+*/
 
 /**
  * Route '/discovery' for HTTP 'POST' requests.
@@ -77,7 +99,15 @@ router.get('/', (req, res) => {
  * To this end, "GeoTagStore" provides methods to search geotags 
  * by radius and keyword.
  */
-
 // TODO: ... your code here ...
+router.post('/discovery', (req, res) => {
+  console.log(req.body);
+  console.log("req.body[search_input] " + req.body["search_input"]);
+  let queryTag = new GeoTag('Query',
+      req.body["discovery_latitude"],
+      req.body["discovery_longitude"],
+      '#query');
+  res.render('index', {taglist: GeoTagStore.searchNearbyGeoTags(queryTag, 100000, req.body["search_input"]) })
+});
 
 module.exports = router;
