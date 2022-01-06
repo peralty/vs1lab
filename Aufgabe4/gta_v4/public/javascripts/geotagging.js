@@ -70,7 +70,64 @@ function updateDocument(helper) {
     document.getElementById("mapView").src = mapURL;
 }
 
+//(A4)
 // Wait for the page to fully load its DOM content, then call updateLocation
 document.addEventListener("DOMContentLoaded", () => {
     updateLocation();
+    getInitialValues();
+    document.getElementById("add_tag_button").addEventListener("click", function (){
+        const xhttp = new XMLHttpRequest(),
+            method="POST",
+            url="http://localhost:3000/api/geotags";
+        xhttp.open(method, url, true);
+        xhttp.setRequestHeader("Content-Type","application/json;charset=UTF-8");
+        let data = {
+            latitude: document.getElementById("latitude_input").value,
+            longitude: document.getElementById("longitude_input").value,
+            name: document.getElementById("name_input").value,
+            hashtag: document.getElementById("hashtag_input").value
+        }
+
+        xhttp.onreadystatechange = function (){
+            console.log(xhttp.readyState);
+            if (xhttp.readyState === XMLHttpRequest.DONE && xhttp.status === 200)
+            {
+
+                console.log(xhttp.response);
+                const answer = JSON.parse(JSON.parse(xhttp.response));
+                //JSON.parse(JSON.parse(xhttp.response))
+                console.log(answer);
+                let element = document.createElement("li")
+                element.innerHTML = (`${answer.name} ${answer.latitude} ${answer.longitude} ${answer.hashtag}`);
+                document.getElementById("discoveryResults").appendChild(element);
+            }
+
+
+        }
+        xhttp.send(JSON.stringify(data));
+    })
 });
+
+function getInitialValues(){
+    const xhttp = new XMLHttpRequest(),
+        method="GET",
+        url="http://localhost:3000/api/geotags";
+    xhttp.open(method, url, true);
+    xhttp.onreadystatechange = function (){
+        console.log(xhttp.readyState);
+        if (xhttp.readyState === XMLHttpRequest.DONE && xhttp.status === 200)
+        {
+            const answer = JSON.parse(xhttp.response);
+            console.log(answer);
+
+            for(let i = 0; i < answer.geotags.length; i++)
+            {
+                let element = document.createElement("li")
+                element.innerHTML = (`${answer.geotags[i].name} ${answer.geotags[i].latitude} ${answer.geotags[i].longitude} ${answer.geotags[i].hashtag}`);
+                document.getElementById("discoveryResults").appendChild(element);
+            }
+
+        }
+    }
+    xhttp.send();
+}

@@ -9,9 +9,9 @@
 /**
  * Define module dependencies.
  */
-
 const express = require('express');
 const router = express.Router();
+const tags = require('../models/geotag-examples');
 
 /**
  * The module "geotag" exports a class GeoTagStore. 
@@ -151,7 +151,6 @@ router.post('/discovery', (req, res) => {
  * Changes the tag with the corresponding ID to the sent value.
  * The updated resource is rendered as JSON in the response. 
  */
-
 // TODO: ... your code here ...
 
 
@@ -167,5 +166,20 @@ router.post('/discovery', (req, res) => {
  */
 
 // TODO: ... your code here ...
+
+// (A4 first)
+let memoryTags = tags.tagList;
+
+router.get("/api/geotags", function (req, res){
+    res.json({geotags: memoryTags});
+})
+
+router.post("/api/geotags", function (req, res){
+    //let newTag = JSON.parse(req.body);
+    //memoryTags.push(GeoTag.constructor(req.body.name, req.body.latitude, req.body.longitude, req.body.hashtag));
+    memoryTags.push(new GeoTag(req.body.name, req.body.latitude, req.body.longitude, req.body.hashtag));
+    console.log(memoryTags);
+    res.json(JSON.stringify(req.body));
+})
 
 module.exports = router;
