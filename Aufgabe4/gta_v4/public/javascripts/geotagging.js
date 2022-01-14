@@ -1,5 +1,5 @@
 // File origin: VS1LAB A2
-
+// testtest
 /* eslint-disable no-unused-vars */
 
 // This script is executed when the browser loads index.html.
@@ -9,6 +9,7 @@
 // Try to find this output in the browser...
 console.log("The geoTagging script is going to start...");
 
+let clientTags = [];
 /**
  * TODO: 'updateLocation'
  * A function to retrieve the current location and update the page.
@@ -70,43 +71,77 @@ function updateDocument(helper) {
     document.getElementById("mapView").src = mapURL;
 }
 
-//(A4)
+/* old location helper
+function updateLocation() {
+    try{
+        LocationHelper.findLocation(updateDocument);} 
+    catch(e){
+        alert("Fehler beim Auslesen der Position!");
+    }
+
+    let mapManager = new MapManager("EHhsx33AjvAofKoU9zPL366HAQnvBAwE");
+    var mapURL = mapManager.getMapUrl(
+        document.getElementById("latitude_input").value, 
+        document.getElementById("longitude_input").value,
+    )
+    document.getElementById("mapView").setAttribute("src",mapURL) ;
+}
+*/
+
+
 // Wait for the page to fully load its DOM content, then call updateLocation
 document.addEventListener("DOMContentLoaded", () => {
     updateLocation();
     getInitialValues();
+
     document.getElementById("add_tag_button").addEventListener("click", function (){
-        const xhttp = new XMLHttpRequest(),
-            method="POST",
-            url="http://localhost:3000/api/geotags";
-        xhttp.open(method, url, true);
-        xhttp.setRequestHeader("Content-Type","application/json;charset=UTF-8");
         let data = {
             latitude: document.getElementById("latitude_input").value,
             longitude: document.getElementById("longitude_input").value,
             name: document.getElementById("name_input").value,
             hashtag: document.getElementById("hashtag_input").value
         }
+        if(!(data.hashtag.match(/#[a-zA-Z0-9]+/))){
+            return;
+        }
+        const xhttp = new XMLHttpRequest(),
+            method="POST",
+            url="http://localhost:3000/api/geotags";
+        xhttp.open(method, url, true);
+        xhttp.setRequestHeader("Content-Type","application/json;charset=UTF-8");
+
 
         xhttp.onreadystatechange = function (){
-            console.log(xhttp.readyState);
+            //console.log(xhttp.readyState);
             if (xhttp.readyState === XMLHttpRequest.DONE && xhttp.status === 200)
             {
 
-                console.log(xhttp.response);
+                //console.log(xhttp.response);
                 const answer = JSON.parse(JSON.parse(xhttp.response));
-                //JSON.parse(JSON.parse(xhttp.response))
-                console.log(answer);
+                //console.log(answer);
                 let element = document.createElement("li")
                 element.innerHTML = (`${answer.name} ${answer.latitude} ${answer.longitude} ${answer.hashtag}`);
                 document.getElementById("discoveryResults").appendChild(element);
+                clientTags.push(answer);
             }
-
-
         }
         xhttp.send(JSON.stringify(data));
     })
-});
+
+    document.getElementById("search_button").addEventListener("click", function () {
+        let searchWord = document.getElementById("search_input").value.toLowerCase();
+        let filterTags = clientTags.filter((tag) => {
+                return tag.name.toLowerCase().includes(searchWord) || tag.hashtag.toLowerCase().includes(searchWord);
+            }
+        );
+
+        document.getElementById("discoveryResults").innerHTML = "";
+        for (let i = 0; i < filterTags.length; i++) {
+            let element = document.createElement("li");
+            element.innerHTML = (`${filterTags[i].name} ${filterTags[i].latitude} ${filterTags[i].longitude} ${filterTags[i].hashtag}`);
+            document.getElementById("discoveryResults").appendChild(element);
+        }
+    });
 
 function getInitialValues(){
     const xhttp = new XMLHttpRequest(),
@@ -119,6 +154,7 @@ function getInitialValues(){
         {
             const answer = JSON.parse(xhttp.response);
             console.log(answer);
+            document.getElementById("discoveryResults").innerHTML = "";
 
             for(let i = 0; i < answer.geotags.length; i++)
             {
@@ -126,8 +162,30 @@ function getInitialValues(){
                 element.innerHTML = (`${answer.geotags[i].name} ${answer.geotags[i].latitude} ${answer.geotags[i].longitude} ${answer.geotags[i].hashtag}`);
                 document.getElementById("discoveryResults").appendChild(element);
             }
+            clientTags = answer.geotags.slice();
+            
+            let newMap = document.createElement("img");
+            newMap.setAttribute("data-tags", JSON.stringify(clientTags));
+            newMap.setAttribute("id","mapView");
+            newMap.setAttribute("alt","2 a map with locations");
+            newMap.setAttribute("src","./images/mapview.jpg");
+            //console.log(newMap);
+            document.getElementById("mapView").replaceWith(newMap);
 
         }
     }
     xhttp.send();
+}})
+
+/*
+function updateMapWithClientTags() {
+    let newMap = document.createElement("img");
+    newMap.setAttribute("data-tags", JSON.stringify(clientTags));
+    newMap.setAttribute("id","mapView");
+    newMap.setAttribute("alt","2 a map with locations");
+    newMap.setAttribute("src","./images/mapview.jpg");
+    console.log(newMap);
+    document.getElementById("mapView").replaceWith(newMap);
 }
+*/
+
