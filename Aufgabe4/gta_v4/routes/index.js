@@ -47,14 +47,14 @@ router.get("/api/geotags", function (req, res){
 router.post("/api/geotags", function (req, res){
   memoryTags.push(new GeoTag(req.body.name, req.body.latitude, req.body.longitude, req.body.hashtag));
   console.log(memoryTags);
-  res.json(JSON.stringify(req.body));
+  res.json(req.body);
 })
 
 router.get("/api/geotags/:id", function (req,res) {
   let id = req.params.id;
   for (let i = 0; i < memoryTags.length; i++) {
       if(memoryTags[i].id == id){
-          res.json(JSON.stringify(memoryTags[i]))
+          res.json(memoryTags[i]);
       }
   }
   res.sendStatus(404)
@@ -68,8 +68,8 @@ router.put("/api/geotags/:id", function (req, res) {
           let newTag = new GeoTag(req.body.name, req.body.latitude, req.body.longitude, req.body.hashtag);
           GeoTag.id = id;
           newTag.id = memoryTags[i].id;
-          memoryTags[i] = newTag
-          res.json(JSON.stringify(memoryTags[i]))
+          memoryTags[i] = newTag;
+          res.json(memoryTags[i]);
       }
   }
   res.sendStatus(404)
